@@ -1,0 +1,1 @@
+<img src="{{ asset('logo-ecole.png') }}" alt="Logo École - Suivi Scolaire" {{ $attributes }} class="h-auto"> 
