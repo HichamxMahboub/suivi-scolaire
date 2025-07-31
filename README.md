@@ -59,6 +59,8 @@ php artisan serve
   - **Enseignant** : Consultation élèves, gestion notes
 - ✅ **Nouveau** : Permissions granulaires par fonctionnalité
 - ✅ **Nouveau** : Interface de gestion des rôles
+- ✅ **Nouveau** : Interface web pour créer des utilisateurs (Admin uniquement)
+- ✅ **Nouveau** : Statistiques des utilisateurs par rôle
 
 ### 📊 Système de Notes
 - ✅ Support pour 3 types d'établissements :

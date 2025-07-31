@@ -716,7 +716,7 @@ class EleveController extends Controller
                     ]);
                     $created++;
                 } catch (\Exception $e) {
-                    \Log::warning('Erreur création utilisateur pour élève', [
+                    Log::warning('Erreur création utilisateur pour élève', [
                         'nom' => $nom,
                         'prenom' => $prenom,
                         'email' => $email,
@@ -728,7 +728,7 @@ class EleveController extends Controller
         
         fclose($handle);
         
-        \Log::info("Création d'utilisateurs terminée", ['created' => $created]);
+        Log::info("Création d'utilisateurs terminée", ['created' => $created]);
         return $created;
     }
 
