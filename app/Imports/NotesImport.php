@@ -12,19 +12,6 @@ use Illuminate\Support\Facades\Validator;
 
 class NotesImport implements ToModel, WithHeadingRow
 {
-
-<?php
-
-namespace App\Imports;
-
-use App\Models\Note;
-use App\Models\Eleve;
-use App\Models\User;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-
-class NotesImport implements ToModel, WithHeadingRow
-{
     protected $importResults = [
         'success' => 0,
         'errors' => 0,
@@ -119,5 +106,4 @@ class NotesImport implements ToModel, WithHeadingRow
     {
         return 1;
     }
-}
 }
