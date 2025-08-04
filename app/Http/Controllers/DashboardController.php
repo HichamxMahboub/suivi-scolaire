@@ -75,13 +75,8 @@ class DashboardController extends Controller
 
         $eleves_par_mois = Cache::remember('dashboard_mois', 300, function () {
             return Eleve::select(
-<<<<<<< HEAD
                     DB::raw('MONTH(created_at) as mois'),
                     DB::raw('YEAR(created_at) as annee'),
-=======
-                    DB::raw("strftime('%m', created_at) as mois"),
-                    DB::raw("strftime('%Y', created_at) as annee"),
->>>>>>> 9c53c191ecec3c6c2106528e2196200d297a3088
                     DB::raw('count(*) as total')
                 )
                 ->where('created_at', '>=', Carbon::now()->subMonths(6))
@@ -94,11 +89,7 @@ class DashboardController extends Controller
         $eleves_incomplets = Cache::remember('dashboard_incomplets', 300, function () {
             return Eleve::whereNull('date_naissance')
                 ->orWhereNull('niveau_scolaire')
-<<<<<<< HEAD
                 ->orWhereNull('nom_tuteur')
-=======
-                ->orWhereNull('nom_parent_1')
->>>>>>> 9c53c191ecec3c6c2106528e2196200d297a3088
                 ->count();
         });
 

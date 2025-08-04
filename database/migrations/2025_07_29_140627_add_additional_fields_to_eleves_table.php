@@ -92,16 +92,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('eleves', function (Blueprint $table) {
-            // Supprimer les colonnes dans l'ordre inverse
-<<<<<<< HEAD
-            // Supprimer les contraintes étrangères
+            // Supprimer les contraintes étrangères et colonnes
             $table->dropForeign(['encadrant_id']);
             $table->dropForeign(['classe_id']);
-            // Supprimer les colonnes
-=======
-            $table->dropIndex(['encadrant_id']);
-            $table->dropIndex(['classe_id']);
->>>>>>> 9c53c191ecec3c6c2106528e2196200d297a3088
             $table->dropColumn([
                 'encadrant_id',
                 'classe_id',

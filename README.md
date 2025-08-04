@@ -29,6 +29,11 @@ php artisan serve
 - Email: admin@ecole.ma
 - Mot de passe: admin123
 
+## Documentation
+
+- [Guide d'accès rapide](docs/ACCES_RAPIDE.md)
+- [Comptes administrateurs](docs/ADMIN_ACCOUNTS.md)
+
 ## Fonctionnalités
 
 ### 📚 Gestion des Élèves

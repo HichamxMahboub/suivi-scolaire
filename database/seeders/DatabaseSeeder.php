@@ -39,10 +39,8 @@ class DatabaseSeeder extends Seeder
             MessageSeeder::class,
             UpdateNiveauxScolairesSeeder::class,
             EleveSeeder::class, // Ajout du seeder des élèves
-<<<<<<< HEAD
-=======
+            EleveSeeder::class, // Ajout du seeder des élèves
             NoteSeeder::class, // Ajouter le seeder des notes
->>>>>>> 9c53c191ecec3c6c2106528e2196200d297a3088
         ]);
     }
 }
