@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Classe extends Model
@@ -16,6 +17,7 @@ class Classe extends Model
         'description',
         'professeur_principal',
         'effectif_max',
+        'encadrant_id',
         'active',
     ];
 
@@ -32,6 +34,11 @@ class Classe extends Model
     public function notes()
     {
         return $this->hasManyThrough(\App\Models\Note::class, \App\Models\Eleve::class);
+    }
+
+    public function encadrant(): BelongsTo
+    {
+        return $this->belongsTo(Encadrant::class);
     }
 
     public function getEffectifActuelAttribute(): int
