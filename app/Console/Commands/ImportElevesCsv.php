@@ -44,7 +44,9 @@ class ImportElevesCsv extends Command
                 $data = array_combine($headers, $row);
                 // Nettoyage des champs vides
                 foreach ($data as $k => $v) {
-                    if ($v === '') $data[$k] = null;
+                    if ($v === '') {
+                        $data[$k] = null;
+                    }
                 }
                 Eleve::create($data);
                 $importedCount++;
@@ -67,4 +69,4 @@ class ImportElevesCsv extends Command
         $this->info("Import terminé !");
         return 0;
     }
-} 
+}

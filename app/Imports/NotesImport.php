@@ -7,8 +7,6 @@ use App\Models\Eleve;
 use App\Models\User;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
 class NotesImport implements ToModel, WithHeadingRow
 {
@@ -79,7 +77,7 @@ class NotesImport implements ToModel, WithHeadingRow
 
         // Essayer d'autres formats
         $formats = ['d/m/Y', 'd-m-Y', 'Y/m/d', 'm/d/Y'];
-        
+
         foreach ($formats as $format) {
             $parsed = \DateTime::createFromFormat($format, $date);
             if ($parsed && $parsed->format($format) === $date) {

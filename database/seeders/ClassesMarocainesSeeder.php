@@ -26,7 +26,7 @@ class ClassesMarocainesSeeder extends Seeder
             ['nom' => '5AP B', 'niveau' => '5AP', 'effectif_max' => 30, 'annee_scolaire' => '2024-2025'],
             ['nom' => '6AP A', 'niveau' => '6AP', 'effectif_max' => 30, 'annee_scolaire' => '2024-2025'],
             ['nom' => '6AP B', 'niveau' => '6AP', 'effectif_max' => 30, 'annee_scolaire' => '2024-2025'],
-            
+
             // Collège
             ['nom' => '1AC A', 'niveau' => '1AC', 'effectif_max' => 35, 'annee_scolaire' => '2024-2025'],
             ['nom' => '1AC B', 'niveau' => '1AC', 'effectif_max' => 35, 'annee_scolaire' => '2024-2025'],
@@ -34,7 +34,7 @@ class ClassesMarocainesSeeder extends Seeder
             ['nom' => '2AC B', 'niveau' => '2AC', 'effectif_max' => 35, 'annee_scolaire' => '2024-2025'],
             ['nom' => '3AC A', 'niveau' => '3AC', 'effectif_max' => 35, 'annee_scolaire' => '2024-2025'],
             ['nom' => '3AC B', 'niveau' => '3AC', 'effectif_max' => 35, 'annee_scolaire' => '2024-2025'],
-            
+
             // Lycée - Tronc Commun
             ['nom' => 'TC Sciences A', 'niveau' => 'TC Sciences', 'effectif_max' => 40, 'annee_scolaire' => '2024-2025'],
             ['nom' => 'TC Sciences B', 'niveau' => 'TC Sciences', 'effectif_max' => 40, 'annee_scolaire' => '2024-2025'],
@@ -42,7 +42,7 @@ class ClassesMarocainesSeeder extends Seeder
             ['nom' => 'TC Lettres B', 'niveau' => 'TC Lettres', 'effectif_max' => 40, 'annee_scolaire' => '2024-2025'],
             ['nom' => 'TC Techniques A', 'niveau' => 'TC Techniques', 'effectif_max' => 35, 'annee_scolaire' => '2024-2025'],
             ['nom' => 'TC Économie A', 'niveau' => 'TC Économie', 'effectif_max' => 35, 'annee_scolaire' => '2024-2025'],
-            
+
             // 1ère année Bac
             ['nom' => '1ère Bac Sciences Mathématiques A', 'niveau' => '1ère Bac Sciences Mathématiques A', 'effectif_max' => 35, 'annee_scolaire' => '2024-2025'],
             ['nom' => '1ère Bac Sciences Mathématiques B', 'niveau' => '1ère Bac Sciences Mathématiques B', 'effectif_max' => 35, 'annee_scolaire' => '2024-2025'],
@@ -52,7 +52,7 @@ class ClassesMarocainesSeeder extends Seeder
             ['nom' => '1ère Bac Techniques de gestion', 'niveau' => '1ère Bac Techniques de gestion', 'effectif_max' => 35, 'annee_scolaire' => '2024-2025'],
             ['nom' => '1ère Bac Lettres modernes', 'niveau' => '1ère Bac Lettres modernes', 'effectif_max' => 35, 'annee_scolaire' => '2024-2025'],
             ['nom' => '1ère Bac Lettres originelles', 'niveau' => '1ère Bac Lettres originelles', 'effectif_max' => 35, 'annee_scolaire' => '2024-2025'],
-            
+
             // 2ème année Bac
             ['nom' => '2ème Bac Sciences Mathématiques A', 'niveau' => '2ème Bac Sciences Mathématiques A', 'effectif_max' => 35, 'annee_scolaire' => '2024-2025'],
             ['nom' => '2ème Bac Sciences Mathématiques B', 'niveau' => '2ème Bac Sciences Mathématiques B', 'effectif_max' => 35, 'annee_scolaire' => '2024-2025'],
@@ -73,4 +73,4 @@ class ClassesMarocainesSeeder extends Seeder
 
         $this->command->info('Classes marocaines créées avec succès !');
     }
-} 
+}

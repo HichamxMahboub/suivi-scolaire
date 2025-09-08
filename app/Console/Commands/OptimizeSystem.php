@@ -57,16 +57,16 @@ class OptimizeSystem extends Command
     {
         // Vérifier le temps de réponse des requêtes principales
         $start = microtime(true);
-        
+
         // Test dashboard
         DB::table('eleves')->count();
         DB::table('classes')->count();
         DB::table('messages')->count();
         DB::table('notes')->count();
-        
+
         $end = microtime(true);
         $time = round(($end - $start) * 1000, 2);
-        
+
         if ($time < 100) {
             $this->info("✅ Temps de réponse excellent: {$time}ms");
         } elseif ($time < 500) {
@@ -75,4 +75,4 @@ class OptimizeSystem extends Command
             $this->warn("❌ Temps de réponse lent: {$time}ms");
         }
     }
-} 
+}

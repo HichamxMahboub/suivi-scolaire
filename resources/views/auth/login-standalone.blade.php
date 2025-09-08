@@ -10,6 +10,10 @@
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
         <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
             <div class="mb-6 text-center">
+                <!-- Logo -->
+                <div class="flex justify-center mb-4">
+                    <img src="{{ asset('logo-ecole.png') }}" alt="Logo École" class="h-16 w-auto mx-auto">
+                </div>
                 <h1 class="text-2xl font-bold text-gray-800">Suivi Scolaire</h1>
                 <p class="text-gray-600">Connexion</p>
             </div>
@@ -66,11 +70,6 @@
                 </div>
             </form>
 
-            <div class="mt-6 text-center text-sm text-gray-600">
-                <p>Comptes de test :</p>
-                <p><strong>Admin :</strong> admin@ecole.ma / admin123</p>
-                <p><strong>Enseignant :</strong> math@ecole.ma / enseignant123</p>
-            </div>
         </div>
     </div>
 </body>

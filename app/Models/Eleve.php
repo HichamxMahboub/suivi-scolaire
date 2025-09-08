@@ -93,17 +93,17 @@ class Eleve extends Model
     public function getMoyenneSemestre($semestre = null)
     {
         $query = $this->notes();
-        
+
         if ($semestre) {
             $query->where('semestre', $semestre);
         }
-        
+
         $notes = $query->get();
-        
+
         if ($notes->count() === 0) {
             return 0;
         }
-        
+
         $totalPoints = $notes->sum('note_vingt');
         return round($totalPoints / $notes->count(), 2);
     }
@@ -119,9 +119,9 @@ class Eleve extends Model
     /**
      * Constantes pour les types d'établissement
      */
-    const TYPE_PRIMAIRE = 'primaire';
-    const TYPE_COLLEGE = 'college';
-    const TYPE_LYCEE = 'lycee';
+    public const TYPE_PRIMAIRE = 'primaire';
+    public const TYPE_COLLEGE = 'college';
+    public const TYPE_LYCEE = 'lycee';
 
     /**
      * Obtenir tous les types d'établissement disponibles
@@ -160,17 +160,17 @@ class Eleve extends Model
         // Si une classe est assignée, utiliser le niveau de la classe
         if ($this->classeInfo && $this->classeInfo->niveau) {
             $niveau = strtolower($this->classeInfo->niveau);
-            
+
             // Primaire : CP, CE1, CE2, CM1, CM2
             if (preg_match('/^(cp|ce[12]|cm[12])/', $niveau)) {
                 return self::TYPE_PRIMAIRE;
             }
-            
+
             // Collège : 6ème à 3ème
             if (preg_match('/^([6543]).*|sixieme|cinquieme|quatrieme|troisieme/', $niveau)) {
                 return self::TYPE_COLLEGE;
             }
-            
+
             // Lycée : 2nde, 1ère, Terminale
             if (preg_match('/^(2nd|1er|ter|seconde|premiere|terminale)/', $niveau)) {
                 return self::TYPE_LYCEE;
@@ -180,15 +180,15 @@ class Eleve extends Model
         // Fallback sur le niveau scolaire de l'élève
         if ($this->niveau_scolaire) {
             $niveau = strtolower($this->niveau_scolaire);
-            
+
             if (preg_match('/^(cp|ce[12]|cm[12])/', $niveau)) {
                 return self::TYPE_PRIMAIRE;
             }
-            
+
             if (preg_match('/^([6543]).*|sixieme|cinquieme|quatrieme|troisieme/', $niveau)) {
                 return self::TYPE_COLLEGE;
             }
-            
+
             if (preg_match('/^(2nd|1er|ter|seconde|premiere|terminale)/', $niveau)) {
                 return self::TYPE_LYCEE;
             }

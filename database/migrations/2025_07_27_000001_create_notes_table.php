@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
@@ -23,7 +22,7 @@ return new class extends Migration
             $table->text('commentaire')->nullable();
             $table->foreignId('enseignant_id')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
-            
+
             // Index pour optimiser les requêtes
             $table->index(['eleve_id', 'matiere']);
             $table->index(['date_evaluation']);

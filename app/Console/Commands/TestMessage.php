@@ -30,7 +30,7 @@ class TestMessage extends Command
         // Get admin and encadrant users
         $admin = User::where('email', 'admin@ecole.ma')->first();
         $encadrant = User::where('email', 'marie.dubois@ecole.ma')->first();
-        
+
         if (!$admin || !$encadrant) {
             $this->error('Users not found. Please ensure admin and encadrant users exist.');
             return;
@@ -59,11 +59,11 @@ class TestMessage extends Command
         $this->info('✅ Messages de test créés avec succès !');
         $this->info('📧 Message 1: Admin → Encadrant (ID: ' . $message->id . ')');
         $this->info('📧 Message 2: Encadrant → Admin (ID: ' . $reply->id . ')');
-        
+
         // Show current message count
         $totalMessages = Message::count();
         $this->info('📊 Total des messages dans la base : ' . $totalMessages);
-        
+
         return Command::SUCCESS;
     }
 }

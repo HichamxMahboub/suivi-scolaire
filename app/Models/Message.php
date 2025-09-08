@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Crypt;
 
 class Message extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'sender_id',
@@ -195,4 +196,4 @@ class Message extends Model
             return $value; // fallback si non chiffré
         }
     }
-} 
+}

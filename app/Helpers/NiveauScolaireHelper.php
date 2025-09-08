@@ -28,14 +28,14 @@ class NiveauScolaireHelper
     {
         $ordre = config('niveaux_scolaires.ordre', []);
         $niveaux = self::getNiveaux();
-        
+
         $niveauxOrdonnes = [];
         foreach ($ordre as $code) {
             if (isset($niveaux[$code])) {
                 $niveauxOrdonnes[$code] = $niveaux[$code];
             }
         }
-        
+
         return $niveauxOrdonnes;
     }
 
@@ -46,7 +46,7 @@ class NiveauScolaireHelper
     {
         $groupes = config('niveaux_scolaires.groupes', []);
         $niveaux = self::getNiveaux();
-        
+
         $resultat = [];
         foreach ($groupes as $nomGroupe => $codes) {
             $resultat[$nomGroupe] = [];
@@ -56,7 +56,7 @@ class NiveauScolaireHelper
                 }
             }
         }
-        
+
         return $resultat;
     }
 
@@ -66,13 +66,13 @@ class NiveauScolaireHelper
     public static function getGroupeNiveau(string $code): ?string
     {
         $groupes = config('niveaux_scolaires.groupes', []);
-        
+
         foreach ($groupes as $nomGroupe => $codes) {
             if (in_array($code, $codes)) {
                 return $nomGroupe;
             }
         }
-        
+
         return null;
     }
 
@@ -92,7 +92,7 @@ class NiveauScolaireHelper
     {
         $groupes = config('niveaux_scolaires.groupes', []);
         $niveaux = self::getNiveaux();
-        
+
         $resultat = [];
         if (isset($groupes['primaire'])) {
             foreach ($groupes['primaire'] as $code) {
@@ -101,7 +101,7 @@ class NiveauScolaireHelper
                 }
             }
         }
-        
+
         return $resultat;
     }
 
@@ -112,7 +112,7 @@ class NiveauScolaireHelper
     {
         $groupes = config('niveaux_scolaires.groupes', []);
         $niveaux = self::getNiveaux();
-        
+
         $resultat = [];
         if (isset($groupes['college'])) {
             foreach ($groupes['college'] as $code) {
@@ -121,7 +121,7 @@ class NiveauScolaireHelper
                 }
             }
         }
-        
+
         return $resultat;
     }
 
@@ -132,10 +132,10 @@ class NiveauScolaireHelper
     {
         $groupes = config('niveaux_scolaires.groupes', []);
         $niveaux = self::getNiveaux();
-        
+
         $resultat = [];
         $lyceeGroupes = ['lycee_tronc_commun', 'lycee_1ere_bac', 'lycee_2eme_bac'];
-        
+
         foreach ($lyceeGroupes as $groupe) {
             if (isset($groupes[$groupe])) {
                 foreach ($groupes[$groupe] as $code) {
@@ -145,7 +145,7 @@ class NiveauScolaireHelper
                 }
             }
         }
-        
+
         return $resultat;
     }
 
@@ -156,10 +156,10 @@ class NiveauScolaireHelper
     {
         $groupes = config('niveaux_scolaires.groupes', []);
         $niveaux = self::getNiveaux();
-        
+
         $resultat = [];
         $bacGroupes = ['lycee_1ere_bac', 'lycee_2eme_bac'];
-        
+
         foreach ($bacGroupes as $groupe) {
             if (isset($groupes[$groupe])) {
                 foreach ($groupes[$groupe] as $code) {
@@ -169,7 +169,7 @@ class NiveauScolaireHelper
                 }
             }
         }
-        
+
         return $resultat;
     }
 
@@ -189,7 +189,7 @@ class NiveauScolaireHelper
         } elseif (in_array($code, config('niveaux_scolaires.groupes.lycee_2eme_bac', []))) {
             return 'Lycée - 2ème Bac';
         }
-        
+
         return 'Non défini';
     }
-} 
+}

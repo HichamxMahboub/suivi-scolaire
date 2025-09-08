@@ -1,4 +1,5 @@
 <?php
+
 return [
     'title' => 'Tableau de bord',
     'welcome' => 'Bienvenue sur le Dashboard',
@@ -26,4 +27,4 @@ return [
     'small' => 'Petite',
     'normal' => 'Normale',
     'large' => 'Grande',
-]; 
+];

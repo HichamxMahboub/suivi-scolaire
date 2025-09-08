@@ -114,4 +114,4 @@ class MessageSeeder extends Seeder
         Message::where('recipient_id', $admin->id)->take(2)->update(['read_at' => now()]);
         Message::where('recipient_id', $profMath->id)->take(1)->update(['read_at' => now()]);
     }
-} 
+}

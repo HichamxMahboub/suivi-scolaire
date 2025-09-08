@@ -25,7 +25,7 @@ class CreateAdminUser extends Command
             $user->password = Hash::make($password);
             $user->role = 'admin';
             $user->save();
-            
+
             $this->info("Utilisateur administrateur mis à jour :");
         } else {
             // Créer un nouvel utilisateur
@@ -36,14 +36,14 @@ class CreateAdminUser extends Command
                 'role' => 'admin',
                 'email_verified_at' => now(),
             ]);
-            
+
             $this->info("Nouvel utilisateur administrateur créé :");
         }
 
         $this->line("Email: {$user->email}");
         $this->line("Mot de passe: {$password}");
         $this->line("Rôle: {$user->role}");
-        
+
         return 0;
     }
 }

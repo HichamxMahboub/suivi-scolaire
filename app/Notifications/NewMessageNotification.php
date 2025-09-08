@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Notifications;
 
 use App\Models\Message;
@@ -26,7 +27,7 @@ class NewMessageNotification extends Notification implements ShouldQueue
 
     public function toMail($notifiable)
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('Nouveau message reçu')
             ->greeting('Bonjour ' . $notifiable->name . ',')
             ->line('Vous avez reçu un nouveau message de ' . $this->message->sender->name . '.')
@@ -43,4 +44,4 @@ class NewMessageNotification extends Notification implements ShouldQueue
             'sender' => $this->message->sender->name,
         ]);
     }
-} 
+}

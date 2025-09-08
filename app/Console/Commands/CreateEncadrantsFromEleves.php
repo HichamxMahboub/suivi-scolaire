@@ -14,7 +14,7 @@ class CreateEncadrantsFromEleves extends Command
     public function handle()
     {
         $this->info('=== CRÉATION AUTOMATIQUE DES ENCADRANTS ===');
-        
+
         // Récupérer tous les noms d'encadrants uniques depuis les élèves
         $encadrantsNoms = Eleve::whereNotNull('educateur_responsable')
                              ->where('educateur_responsable', '!=', '')
@@ -22,18 +22,18 @@ class CreateEncadrantsFromEleves extends Command
                              ->pluck('educateur_responsable')
                              ->filter()
                              ->unique();
-        
+
         $this->info("Encadrants trouvés dans les données élèves : " . $encadrantsNoms->count());
-        
+
         $created = 0;
         $skipped = 0;
-        
-        foreach($encadrantsNoms as $nomComplet) {
+
+        foreach ($encadrantsNoms as $nomComplet) {
             $nomComplet = trim($nomComplet);
-            
+
             // Vérifier si l'encadrant existe déjà
             $existing = Encadrant::where('nom', $nomComplet)
-                                ->orWhere(function($query) use ($nomComplet) {
+                                ->orWhere(function ($query) use ($nomComplet) {
                                     $parts = explode(' ', $nomComplet);
                                     if (count($parts) >= 2) {
                                         $query->where('prenom', $parts[0])
@@ -41,16 +41,16 @@ class CreateEncadrantsFromEleves extends Command
                                     }
                                 })
                                 ->first();
-            
+
             if ($existing) {
                 $skipped++;
                 $this->line("  ◦ {$nomComplet} existe déjà (ID: {$existing->id}), ignoré");
                 continue;
             }
-            
+
             // Analyser le nom pour séparer nom/prénom
             $parts = explode(' ', $nomComplet);
-            
+
             if (count($parts) >= 2) {
                 // Si plusieurs mots, prendre le premier comme prénom et le reste comme nom
                 $prenom = $parts[0];
@@ -60,7 +60,7 @@ class CreateEncadrantsFromEleves extends Command
                 $prenom = $nomComplet;
                 $nom = $nomComplet;
             }
-            
+
             try {
                 // Créer l'encadrant
                 $encadrant = Encadrant::create([
@@ -73,36 +73,36 @@ class CreateEncadrantsFromEleves extends Command
                     'numero' => $this->generateNumero(),
                     'matricule' => $this->generateUniqueMatricule(),
                 ]);
-                
+
                 $created++;
                 $this->info("  ✓ Encadrant créé : {$encadrant->prenom} {$encadrant->nom} (ID: {$encadrant->id})");
-                
+
                 // Compter combien d'élèves sont associés à cet encadrant
                 $nombreEleves = Eleve::where('educateur_responsable', $nomComplet)->count();
                 $this->line("    → {$nombreEleves} élève(s) associé(s)");
-                
+
             } catch (\Exception $e) {
                 $this->error("  ✗ Erreur création encadrant {$nomComplet}: " . $e->getMessage());
                 continue;
             }
         }
-        
+
         $this->info("\n=== CRÉATION DES RELATIONS ÉLÈVES-ENCADRANTS ===");
-        
+
         // Maintenant créer les relations entre élèves et encadrants
         $linked = 0;
         $notFound = 0;
-        
+
         $eleves = Eleve::whereNotNull('educateur_responsable')
                       ->where('educateur_responsable', '!=', '')
                       ->get();
-        
-        foreach($eleves as $eleve) {
+
+        foreach ($eleves as $eleve) {
             $nomEncadrant = trim($eleve->educateur_responsable);
-            
+
             // Rechercher l'encadrant correspondant
             $encadrant = Encadrant::where('nom', $nomEncadrant)
-                                 ->orWhere(function($query) use ($nomEncadrant) {
+                                 ->orWhere(function ($query) use ($nomEncadrant) {
                                      $parts = explode(' ', $nomEncadrant);
                                      if (count($parts) >= 2) {
                                          $prenom = $parts[0];
@@ -114,7 +114,7 @@ class CreateEncadrantsFromEleves extends Command
                                      }
                                  })
                                  ->first();
-            
+
             if ($encadrant) {
                 $eleve->encadrant_id = $encadrant->id;
                 $eleve->save();
@@ -125,28 +125,28 @@ class CreateEncadrantsFromEleves extends Command
                 $this->warn("  ✗ Encadrant non trouvé pour : {$nomEncadrant}");
             }
         }
-        
+
         $this->info("Relations créées : {$linked}");
         if ($notFound > 0) {
             $this->warn("Encadrants non trouvés : {$notFound}");
         }
-        
+
         $this->info("\n=== RÉSUMÉ ===");
         $this->info("Encadrants créés : {$created}");
         $this->info("Encadrants ignorés (déjà existants) : {$skipped}");
         $this->info("Relations élèves-encadrants créées : {$linked}");
-        
+
         // Afficher la liste des encadrants avec le nombre d'élèves
         $this->info("\n=== LISTE DES ENCADRANTS ET LEURS ÉLÈVES ===");
         $encadrants = Encadrant::with('eleves')->get();
-        foreach($encadrants as $encadrant) {
+        foreach ($encadrants as $encadrant) {
             $nombreEleves = $encadrant->eleves->count();
             $this->line("• {$encadrant->prenom} {$encadrant->nom} : {$nombreEleves} élève(s)");
         }
-        
+
         return 0;
     }
-    
+
     /**
      * Générer un email unique pour l'encadrant
      */
@@ -154,20 +154,20 @@ class CreateEncadrantsFromEleves extends Command
     {
         $nomClean = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $nom));
         $prenomClean = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $prenom));
-        
+
         $baseEmail = "{$prenomClean}.{$nomClean}@ecole.local";
         $email = $baseEmail;
         $counter = 1;
-        
+
         // Vérifier l'unicité
         while (Encadrant::where('email', $email)->exists()) {
             $email = "{$prenomClean}.{$nomClean}{$counter}@ecole.local";
             $counter++;
         }
-        
+
         return $email;
     }
-    
+
     /**
      * Générer un numéro unique pour l'encadrant
      */
@@ -176,7 +176,7 @@ class CreateEncadrantsFromEleves extends Command
         $maxNumero = Encadrant::max('numero');
         return $maxNumero ? $maxNumero + 1 : 1;
     }
-    
+
     /**
      * Générer un matricule unique pour l'encadrant
      */
@@ -191,14 +191,14 @@ class CreateEncadrantsFromEleves extends Command
             } else {
                 $nextNumero = 1;
             }
-            
+
             $matricule = 'ENC' . str_pad($nextNumero, 3, '0', STR_PAD_LEFT);
-            
+
             // Vérifier que ce matricule n'existe pas déjà
             $exists = Encadrant::where('matricule', $matricule)->exists();
-            
+
         } while ($exists);
-        
+
         return $matricule;
     }
 }

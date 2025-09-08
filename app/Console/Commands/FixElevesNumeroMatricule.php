@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 use App\Models\Eleve;
 
 class FixElevesNumeroMatricule extends Command
@@ -51,4 +50,4 @@ class FixElevesNumeroMatricule extends Command
             $this->warn("Il reste $nbVides vides et $nbDoublons doublons à corriger manuellement.");
         }
     }
-} 
+}

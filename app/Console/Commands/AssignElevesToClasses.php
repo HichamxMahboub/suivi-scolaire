@@ -14,7 +14,7 @@ class AssignElevesToClasses extends Command
     public function handle()
     {
         $this->info('Début de l\'assignation automatique des élèves aux classes...');
-        
+
         // Mapping des classes avec leurs matricules correspondants (noms exacts de la DB)
         $classesMatricules = [
             '1ère Année Lycée' => [337, 378, 379, 427, 508, 510, 538, 543, 575, 590, 600, 604, 660, 672, 674, 703],
@@ -36,7 +36,7 @@ class AssignElevesToClasses extends Command
 
         foreach ($classesMatricules as $nomClasse => $matricules) {
             $this->info("\n--- Traitement de la classe: {$nomClasse} ---");
-            
+
             // Trouver la classe dans la base de données
             $classe = Classe::where('nom', $nomClasse)->first();
             if (!$classe) {
@@ -48,24 +48,24 @@ class AssignElevesToClasses extends Command
                 try {
                     // Convertir le matricule en format string avec zéros si nécessaire
                     $matriculeStr = str_pad($matricule, 4, '0', STR_PAD_LEFT);
-                    
+
                     // Chercher l'élève par matricule
                     $eleve = Eleve::where('numero_matricule', $matriculeStr)
                                  ->orWhere('numero_matricule', (string)$matricule)
                                  ->first();
-                    
+
                     if ($eleve) {
                         // Vérifier si l'élève n'est pas déjà assigné à cette classe
                         if ($eleve->classe_id === $classe->id) {
                             $this->line("  ◦ {$eleve->nom} {$eleve->prenom} (mat: {$matricule}) déjà dans {$nomClasse}");
                             continue;
                         }
-                        
+
                         // Assigner l'élève à la classe
                         $eleve->classe_id = $classe->id;
                         $eleve->niveau_scolaire = $classe->nom;
                         $eleve->save();
-                        
+
                         $assigned++;
                         $this->info("  ✓ {$eleve->nom} {$eleve->prenom} (mat: {$matricule}) assigné à {$nomClasse}");
                     } else {

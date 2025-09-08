@@ -5,19 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Eleve;
 use App\Models\Classe;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Collection;
 use App\Exports\ElevesExport;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class EleveController extends Controller
 {
     use AuthorizesRequests;
-    
+
     /**
      * Afficher la liste des élèves
      */
@@ -28,7 +26,7 @@ class EleveController extends Controller
         // Recherche générale (étendue)
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('nom', 'like', "%{$search}%")
                   ->orWhere('prenom', 'like', "%{$search}%")
                   ->orWhere('matricule', 'like', "%{$search}%");
@@ -38,7 +36,7 @@ class EleveController extends Controller
         // Recherche spécifique par nom/prénom
         if ($request->filled('nom_search')) {
             $nomSearch = $request->nom_search;
-            $query->where(function($q) use ($nomSearch) {
+            $query->where(function ($q) use ($nomSearch) {
                 $q->where('nom', 'like', "%{$nomSearch}%")
                   ->orWhere('prenom', 'like', "%{$nomSearch}%");
             });
@@ -47,7 +45,7 @@ class EleveController extends Controller
         // Recherche par téléphone
         if ($request->filled('phone_search')) {
             $phoneSearch = $request->phone_search;
-            $query->where(function($q) use ($phoneSearch) {
+            $query->where(function ($q) use ($phoneSearch) {
                 $q->where('telephones_parent_1', 'like', "%{$phoneSearch}%")
                   ->orWhere('telephones_parent_2', 'like', "%{$phoneSearch}%");
             });
@@ -114,13 +112,13 @@ class EleveController extends Controller
         $groupBy = $request->get('group_by'); // 'cycle', 'niveau', 'filiere', null
         $grouped = null;
         if ($groupBy === 'cycle') {
-            $grouped = $eleves->groupBy(function($eleve) {
+            $grouped = $eleves->groupBy(function ($eleve) {
                 return \App\Helpers\NiveauScolaireHelper::getCycleNiveau($eleve->niveau_scolaire);
             });
         } elseif ($groupBy === 'niveau') {
             $grouped = $eleves->groupBy('niveau_scolaire');
         } elseif ($groupBy === 'filiere') {
-            $grouped = $eleves->groupBy(function($eleve) {
+            $grouped = $eleves->groupBy(function ($eleve) {
                 return \App\Helpers\NiveauScolaireHelper::getNomNiveau($eleve->niveau_scolaire);
             });
         }
@@ -132,14 +130,32 @@ class EleveController extends Controller
         // Vérifier si c'est une requête pour la version temps réel
         if ($request->has('realtime')) {
             return view('eleves.index-realtime', compact(
-                'eleves', 'cycles', 'niveaux', 'filiereBac', 'classes', 'annees', 'groupBy', 'grouped',
-                'totalEleves', 'elevesActifs', 'elevesInactifs'
+                'eleves',
+                'cycles',
+                'niveaux',
+                'filiereBac',
+                'classes',
+                'annees',
+                'groupBy',
+                'grouped',
+                'totalEleves',
+                'elevesActifs',
+                'elevesInactifs'
             ));
         }
 
         return view('eleves.index', compact(
-            'eleves', 'cycles', 'niveaux', 'filiereBac', 'classes', 'annees', 'groupBy', 'grouped',
-            'totalEleves', 'elevesActifs', 'elevesInactifs'
+            'eleves',
+            'cycles',
+            'niveaux',
+            'filiereBac',
+            'classes',
+            'annees',
+            'groupBy',
+            'grouped',
+            'totalEleves',
+            'elevesActifs',
+            'elevesInactifs'
         ));
     }
 
@@ -153,7 +169,7 @@ class EleveController extends Controller
         // Appliquer les mêmes filtres que la méthode index
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('nom', 'like', "%{$search}%")
                   ->orWhere('prenom', 'like', "%{$search}%")
                   ->orWhere('cne', 'like', "%{$search}%")
@@ -177,7 +193,7 @@ class EleveController extends Controller
         $eleves = $query->with('classeInfo')->orderBy('nom', 'asc')->get();
 
         // Préparer les données pour le JSON
-        $elevesData = $eleves->map(function($eleve) {
+        $elevesData = $eleves->map(function ($eleve) {
             return [
                 'id' => $eleve->id,
                 'nom' => $eleve->nom,
@@ -386,7 +402,7 @@ class EleveController extends Controller
         // Si l'utilisateur valide l'import définitif
         if (($request->has('file_tmp') && $request->has('file_name') && $request->has('confirm_import')) ||
             ($request->has('file_tmp') && $request->has('file_name') && $request->has('confirm_import_and_user'))) {
-            
+
             try {
                 // On reconstitue le fichier temporaire
                 $tmpPath = storage_path('app/tmp_' . uniqid() . '_' . $request->file_name);
@@ -410,7 +426,7 @@ class EleveController extends Controller
 
                     // Importer directement les données sélectionnées
                     $imported = $this->importRowsDirectly($headers, $allRows);
-                    
+
                     // Nettoyer le fichier temporaire
                     if (file_exists($tmpPath)) {
                         unlink($tmpPath);
@@ -441,9 +457,9 @@ class EleveController extends Controller
             try {
                 $file = $request->file('file');
                 [$headers, $rows] = $this->extractRowsFromFile($file);
-                
+
                 $imported = $this->importRowsDirectly($headers, $rows);
-                
+
                 if ($imported > 0) {
                     return redirect()->route('eleves.index')
                         ->with('success', "Import direct terminé avec succès. {$imported} élève(s) importé(s).");
@@ -492,7 +508,7 @@ class EleveController extends Controller
 
                 // Vérifier si l'élève existe déjà
                 $existing = null;
-                
+
                 // Vérification par numero_matricule_type_ecole OU par une autre colonne matricule
                 $matriculeKey = null;
                 if (isset($data['numero_matricule_type_ecole'])) {
@@ -506,7 +522,7 @@ class EleveController extends Controller
                 if ($matriculeKey && !empty($data[$matriculeKey])) {
                     $existing = Eleve::where('numero_matricule', $data[$matriculeKey])->first();
                 }
-                
+
                 // Vérification par nom/prénom si pas de matricule
                 if (!$existing && !empty($data['nom']) && !empty($data['prenom'])) {
                     $existing = Eleve::where('nom', $data['nom'])
@@ -520,19 +536,19 @@ class EleveController extends Controller
 
                 // Créer le nouvel élève
                 $eleve = new Eleve();
-                
+
                 // Champs principaux
                 $eleve->nom = $data['nom'] ?: 'Nom_' . ($rowIndex + 1);
                 $eleve->prenom = $data['prenom'] ?: 'Prénom_' . ($rowIndex + 1);
-                
+
                 // Codes d'identification (flexible)
                 if ($matriculeKey) {
                     $eleve->numero_matricule = $data[$matriculeKey];
                 }
-                
+
                 // Encadrement
                 $eleve->educateur_responsable = $data['encadrant'] ?? null;
-                
+
                 // Date de naissance
                 if (!empty($data['date_naissance'])) {
                     try {
@@ -546,10 +562,10 @@ class EleveController extends Controller
                         $eleve->date_naissance = null;
                     }
                 }
-                
+
                 // Année d'entrée
                 $eleve->annee_entree = $data['annee_entree'] ?: date('Y');
-                
+
                 // Sexe (F = Féminin, G = Garçon/Masculin)
                 $sexe = $data['sexe'];
                 if ($sexe === 'G') {
@@ -559,17 +575,17 @@ class EleveController extends Controller
                 } else {
                     $eleve->sexe = null;
                 }
-                
+
                 // Contact - garder vide car pas dans votre structure
                 $eleve->email = null;
                 $eleve->telephone_parent = null;
-                
+
                 // Assignation automatique à une classe basée sur le niveau
                 $classeNom = $data['classe'];
                 if (!empty($classeNom)) {
                     // Rechercher la classe directement par nom
                     $classe = \App\Models\Classe::where('nom', $classeNom)->first();
-                    
+
                     if ($classe) {
                         $eleve->classe_id = $classe->id;
                         $eleve->niveau_scolaire = $classe->nom; // Utiliser le nom de la classe comme niveau
@@ -578,7 +594,7 @@ class EleveController extends Controller
                         $eleve->niveau_scolaire = $classeNom;
                     }
                 }
-                
+
                 // Générer matricule si vide
                 if (empty($eleve->numero_matricule)) {
                     $maxMatricule = Eleve::max('numero_matricule');
@@ -595,7 +611,7 @@ class EleveController extends Controller
             } catch (\Exception $e) {
                 $errors[] = "Ligne " . ($rowIndex + 1) . ": " . $e->getMessage();
                 Log::error('Erreur import ligne ' . ($rowIndex + 1), [
-                    'error' => $e->getMessage(), 
+                    'error' => $e->getMessage(),
                     'data' => $data ?? [],
                     'trace' => $e->getTraceAsString()
                 ]);
@@ -621,9 +637,9 @@ class EleveController extends Controller
         try {
             $file = $request->file('file');
             [$headers, $rows] = $this->extractRowsFromFile($file);
-            
+
             $imported = $this->importRowsDirectly($headers, $rows);
-            
+
             if ($imported > 0) {
                 return response()->json([
                     'success' => true,
@@ -654,7 +670,7 @@ class EleveController extends Controller
     {
         try {
             $filePath = storage_path('app/' . $filename);
-            
+
             if (!file_exists($filePath)) {
                 return response()->json(['error' => 'Fichier non trouvé: ' . $filename], 404);
             }
@@ -662,9 +678,9 @@ class EleveController extends Controller
             // Utiliser la commande Artisan pour l'import
             $output = [];
             $returnCode = 0;
-            
+
             exec("php artisan eleves:import \"{$filePath}\" 2>&1", $output, $returnCode);
-            
+
             if ($returnCode === 0) {
                 return response()->json(['success' => 'Import terminé avec succès']);
             } else {
@@ -684,27 +700,27 @@ class EleveController extends Controller
         $handle = fopen($csvPath, 'r');
         $headers = fgetcsv($handle);
         $created = 0;
-        
+
         while (($data = fgetcsv($handle)) !== false) {
             $row = array_combine($headers, $data);
-            
+
             // Validation des données requises
             if (empty($row['nom']) || empty($row['prenom'])) {
                 continue;
             }
-            
+
             // Nettoyage et validation des données
             $nom = trim($row['nom']);
             $prenom = trim($row['prenom']);
-            
+
             if (strlen($nom) < 2 || strlen($prenom) < 2) {
                 continue;
             }
-            
+
             // Génération d'un email sécurisé
-            $email = strtolower(preg_replace('/[^a-z0-9]/', '', $prenom)) . '.' . 
+            $email = strtolower(preg_replace('/[^a-z0-9]/', '', $prenom)) . '.' .
                      strtolower(preg_replace('/[^a-z0-9]/', '', $nom)) . '@ecole.local';
-            
+
             // Vérification si l'utilisateur existe déjà
             if (!\App\Models\User::where('email', $email)->exists()) {
                 try {
@@ -725,9 +741,9 @@ class EleveController extends Controller
                 }
             }
         }
-        
+
         fclose($handle);
-        
+
         Log::info("Création d'utilisateurs terminée", ['created' => $created]);
         return $created;
     }
@@ -738,10 +754,16 @@ class EleveController extends Controller
     private function extractRowsFromFile($file)
     {
         $extension = strtolower($file->getClientOriginalExtension());
-        
+
         if (in_array($extension, ['csv', 'txt'])) {
             $handle = fopen($file->getRealPath(), 'r');
-            $headers = fgetcsv($handle);
+            // Read and normalize headers: lowercase and trim BOM/unwanted chars
+            $rawHeaders = fgetcsv($handle);
+            $headers = array_map(function ($h) {
+                // Remove BOM and convert to lowercase
+                $h = ltrim($h, "\xEF\xBB\xBF");
+                return strtolower(trim($h));
+            }, $rawHeaders ?: []);
             $rows = [];
             while (($data = fgetcsv($handle)) !== false) {
                 $rows[] = $data;
@@ -798,7 +820,7 @@ class EleveController extends Controller
         $query = Eleve::query();
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('nom', 'like', "%{$search}%")
                   ->orWhere('prenom', 'like', "%{$search}%")
                   ->orWhere('matricule', 'like', "%{$search}%");
@@ -839,12 +861,12 @@ class EleveController extends Controller
         // Calculer la répartition par âge
         $elevesAvecAge = Eleve::whereNotNull('date_naissance')->get();
         $parAge = [];
-        
-        foreach($elevesAvecAge as $eleve) {
+
+        foreach ($elevesAvecAge as $eleve) {
             try {
                 $dateNaissance = \Carbon\Carbon::parse($eleve->date_naissance);
                 $age = $dateNaissance->age;
-                
+
                 if ($age >= 3 && $age <= 25) { // Filtrer les âges réalistes pour l'école
                     if (!isset($parAge[$age])) {
                         $parAge[$age] = 0;
@@ -856,7 +878,7 @@ class EleveController extends Controller
                 continue;
             }
         }
-        
+
         // Trier par âge
         ksort($parAge);
 
@@ -965,7 +987,7 @@ class EleveController extends Controller
         ]);
 
         $eleve->update($request->only([
-            'nom', 'prenom', 'date_naissance', 'lieu_naissance', 
+            'nom', 'prenom', 'date_naissance', 'lieu_naissance',
             'sexe', 'numero_matricule', 'type_etablissement', 'classe_id'
         ]));
 
@@ -993,7 +1015,7 @@ class EleveController extends Controller
 
         $eleve->update($request->only([
             'email', 'telephone', 'adresse', 'contact_urgence', 'nom_tuteur',
-            'profession_pere', 'profession_mere', 'nationalite', 
+            'profession_pere', 'profession_mere', 'nationalite',
             'situation_familiale', 'nombre_freres_soeurs'
         ]));
 
@@ -1020,7 +1042,7 @@ class EleveController extends Controller
         ]);
 
         $eleve->update($request->only([
-            'groupe_sanguin', 'allergies', 'remarques_medicales', 
+            'groupe_sanguin', 'allergies', 'remarques_medicales',
             'medecin_traitant', 'numero_assurance', 'transport_scolaire', 'bourse_etudes'
         ]));
 
@@ -1042,7 +1064,7 @@ class EleveController extends Controller
                 }
             }
             $eleve->update(['photo' => null]);
-            
+
             return redirect()->route('eleves.show', $eleve)
                 ->with('success', 'Photo supprimée avec succès.');
         }
@@ -1063,13 +1085,13 @@ class EleveController extends Controller
                 unlink($oldPhotoPath);
             }
         }
-        
+
         // Définir le chemin de destination
         $destinationPath = public_path('storage/photos/eleves');
-        
+
         // Déplacer le fichier
         $photoFile->move($destinationPath, $fileName);
-        
+
         // Chemin relatif pour la base de données
         $photoPath = 'photos/eleves/' . $fileName;
 
@@ -1094,7 +1116,7 @@ class EleveController extends Controller
     public function exportToPdf(Eleve $eleve)
     {
         $pdf = Pdf::loadView('eleves.profile-pdf', compact('eleve'));
-        
+
         return $pdf->download('profil_' . $eleve->nom . '_' . $eleve->prenom . '.pdf');
     }
-} 
+}

@@ -14,23 +14,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Remove old root and admin users
+        User::whereIn('role', ['root', 'admin'])->delete();
 
-        // Création d'un compte root
-        User::create([
-            'name' => 'Root',
-            'email' => 'root@example.com',
-            'password' => Hash::make('root1234'), // Change ce mot de passe après le premier login !
-            'role' => 'root',
-        ]);
-
-        \App\Models\User::firstOrCreate([
-            'email' => 'root@admin.com'
-        ], [
-            'name' => 'Root Principal',
-            'password' => bcrypt('admin1234'),
-            'role' => 'admin'
-        ]);
+        // Create or update single administrator user
+        User::updateOrCreate(
+            ['email' => 'admin@ecole.ma'],
+            [
+                'name' => 'Administrateur',
+                'password' => Hash::make('admin123'),
+                'role' => 'admin',
+                'email_verified_at' => now(),
+            ]
+        );
 
         // Insérer les données des élèves
         $this->call([
@@ -39,8 +35,7 @@ class DatabaseSeeder extends Seeder
             MessageSeeder::class,
             UpdateNiveauxScolairesSeeder::class,
             EleveSeeder::class, // Ajout du seeder des élèves
-            EleveSeeder::class, // Ajout du seeder des élèves
-            NoteSeeder::class, // Ajouter le seeder des notes
+            // NoteSeeder removed: does not exist
         ]);
     }
 }

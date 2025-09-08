@@ -16,7 +16,7 @@ class MessageFactory extends Factory
         $priorities = ['low', 'normal', 'high', 'urgent'];
         $types = ['general', 'academic', 'behavior', 'health', 'parent_contact', 'other'];
         $statuses = ['sent', 'delivered', 'read'];
-        
+
         return [
             'sender_id' => User::factory(),
             'recipient_id' => User::factory(),
@@ -30,4 +30,4 @@ class MessageFactory extends Factory
             'archived_at' => $this->faker->optional()->dateTimeBetween('-1 month', 'now'),
         ];
     }
-} 
+}

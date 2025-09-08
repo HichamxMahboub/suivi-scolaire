@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Classe;
 use App\Models\Eleve;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 
 class ClasseController extends Controller
@@ -95,7 +94,7 @@ class ClasseController extends Controller
     public function show(Classe $classe)
     {
         $eleves = $classe->eleves()->orderBy('nom')->paginate(20);
-        
+
         // Statistiques de la classe
         $stats = [
             'total_eleves' => $classe->eleves()->count(),
@@ -185,7 +184,7 @@ class ClasseController extends Controller
         ]);
 
         $elevesIds = $request->eleves;
-        
+
         // Vérifier la capacité de la classe
         if ($classe->eleves()->count() + count($elevesIds) > $classe->effectif_max) {
             return back()->with('error', 'La classe ne peut pas accueillir plus d\'élèves.');
@@ -208,10 +207,10 @@ class ClasseController extends Controller
         ]);
 
         $elevesIds = $request->eleves;
-        
+
         // Retirer les élèves
         Eleve::whereIn('id', $elevesIds)->update(['classe_id' => null]);
 
         return back()->with('success', count($elevesIds) . ' élève(s) retiré(s) de la classe.');
     }
-} 
+}

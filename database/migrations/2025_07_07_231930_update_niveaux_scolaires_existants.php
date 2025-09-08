@@ -1,12 +1,9 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
@@ -14,7 +11,7 @@ return new class extends Migration
     {
         // Mettre à jour les niveaux dans la table classes
         DB::table('classes')->where('niveau', 'CP')->update(['niveau' => 'CP1']);
-        
+
         // Mettre à jour les niveaux dans la table eleves
         DB::table('eleves')->where('niveau_scolaire', 'CP')->update(['niveau_scolaire' => 'CP1']);
     }

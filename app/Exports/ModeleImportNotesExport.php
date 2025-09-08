@@ -8,7 +8,6 @@ use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
-use PhpOffice\PhpSpreadsheet\Style\Font;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use App\Models\Eleve;
 
@@ -27,9 +26,9 @@ class ModeleImportNotesExport implements FromArray, WithHeadings, WithStyles, Wi
     public function array(): array
     {
         $data = [];
-        
+
         // Récupérer les élèves selon la classe sélectionnée
-        $eleves = $this->classe_id 
+        $eleves = $this->classe_id
             ? Eleve::where('classe_id', $this->classe_id)->orderBy('nom')->orderBy('prenom')->get()
             : Eleve::orderBy('nom')->orderBy('prenom')->take(5)->get(); // Limite à 5 exemples si aucune classe
 

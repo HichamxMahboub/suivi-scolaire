@@ -23,4 +23,4 @@ class EncadrantFactory extends Factory
             'remarque' => $this->faker->optional()->sentence(),
         ];
     }
-} 
+}

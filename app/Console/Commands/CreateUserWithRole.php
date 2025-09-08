@@ -73,7 +73,7 @@ class CreateUserWithRole extends Command
         // Afficher les permissions du rôle
         $this->newLine();
         $this->info("📋 Permissions accordées :");
-        
+
         switch ($role) {
             case 'admin':
                 $this->line("  • ✅ Accès complet au système");
@@ -81,28 +81,28 @@ class CreateUserWithRole extends Command
                 $this->line("  • ✅ Accès aux informations médicales");
                 $this->line("  • ✅ Modification de toutes les données");
                 break;
-            
+
             case 'encadrant':
                 $this->line("  • ✅ Gestion des élèves (informations de base et contact)");
                 $this->line("  • ✅ Gestion des notes");
                 $this->line("  • ❌ Pas d'accès aux informations médicales");
                 $this->line("  • ✅ Envoi et réception de messages");
                 break;
-            
+
             case 'medical':
                 $this->line("  • ✅ Accès et modification des informations médicales");
                 $this->line("  • ✅ Consultation des profils élèves");
                 $this->line("  • ❌ Pas de gestion des notes");
                 $this->line("  • ✅ Envoi et réception de messages");
                 break;
-            
+
             case 'teacher':
                 $this->line("  • ✅ Consultation des profils élèves");
                 $this->line("  • ✅ Gestion des notes");
                 $this->line("  • ❌ Pas d'accès aux informations médicales");
                 $this->line("  • ✅ Envoi et réception de messages");
                 break;
-            
+
             default:
                 $this->line("  • ✅ Consultation limitée");
                 $this->line("  • ✅ Envoi et réception de messages");

@@ -7,8 +7,6 @@ use App\Models\Eleve;
 use App\Models\User;
 use App\Models\Classe;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 
 class NoteController extends Controller
 {
@@ -23,16 +21,16 @@ class NoteController extends Controller
         }
 
         // Récupérer les classes pour ce type d'établissement
-        $classes = Classe::whereHas('eleves', function($q) use ($typeEtablissement) {
+        $classes = Classe::whereHas('eleves', function ($q) use ($typeEtablissement) {
             $q->where('type_etablissement', $typeEtablissement);
-        })->with(['eleves' => function($q) use ($typeEtablissement) {
+        })->with(['eleves' => function ($q) use ($typeEtablissement) {
             $q->where('type_etablissement', $typeEtablissement);
         }])->orderBy('nom')->get();
 
         $stats = [
             'total_eleves' => Eleve::where('type_etablissement', $typeEtablissement)->count(),
             'total_classes' => $classes->count(),
-            'total_notes' => Note::whereHas('eleve', function($q) use ($typeEtablissement) {
+            'total_notes' => Note::whereHas('eleve', function ($q) use ($typeEtablissement) {
                 $q->where('type_etablissement', $typeEtablissement);
             })->count()
         ];
@@ -70,7 +68,7 @@ class NoteController extends Controller
         }
 
         $eleve = Eleve::findOrFail($eleveId);
-        
+
         // Vérifier que l'élève correspond au type d'établissement
         if ($eleve->type_etablissement !== $typeEtablissement) {
             abort(404, 'Élève non trouvé pour ce type d\'établissement');
@@ -98,15 +96,15 @@ class NoteController extends Controller
                 'college' => Eleve::where('type_etablissement', 'college')->count(),
                 'lycee' => Eleve::where('type_etablissement', 'lycee')->count(),
             ];
-            
+
             return view('notes.home', compact('stats'));
         }
 
         // Si un type d'établissement est sélectionné, continuer avec la logique existante
         $typeEtablissement = $request->get('type_etablissement');
-        
+
         $query = Note::with(['eleve.classeInfo', 'enseignant'])
-                     ->whereHas('eleve', function($q) use ($typeEtablissement) {
+                     ->whereHas('eleve', function ($q) use ($typeEtablissement) {
                          $q->where('type_etablissement', $typeEtablissement);
                      });
 
@@ -124,7 +122,7 @@ class NoteController extends Controller
         }
 
         if ($request->filled('classe_id')) {
-            $query->whereHas('eleve', function($q) use ($request) {
+            $query->whereHas('eleve', function ($q) use ($request) {
                 $q->where('classe_id', $request->classe_id);
             });
         }
@@ -132,10 +130,10 @@ class NoteController extends Controller
         // Recherche
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('matiere', 'like', "%$search%")
                   ->orWhere('type_evaluation', 'like', "%$search%")
-                  ->orWhereHas('eleve', function($eleveQuery) use ($search) {
+                  ->orWhereHas('eleve', function ($eleveQuery) use ($search) {
                       $eleveQuery->where('nom', 'like', "%$search%")
                                  ->orWhere('prenom', 'like', "%$search%");
                   });
@@ -146,10 +144,10 @@ class NoteController extends Controller
 
         // Données pour les filtres - filtrées par type d'établissement
         $eleves = Eleve::where('type_etablissement', $typeEtablissement)->orderBy('nom')->get();
-        $classes = Classe::whereHas('eleves', function($q) use ($typeEtablissement) {
+        $classes = Classe::whereHas('eleves', function ($q) use ($typeEtablissement) {
             $q->where('type_etablissement', $typeEtablissement);
         })->orderBy('nom')->get();
-        $matieres = Note::whereHas('eleve', function($q) use ($typeEtablissement) {
+        $matieres = Note::whereHas('eleve', function ($q) use ($typeEtablissement) {
             $q->where('type_etablissement', $typeEtablissement);
         })->distinct('matiere')->orderBy('matiere')->pluck('matiere');
         $semestres = ['S1', 'S2'];
@@ -183,7 +181,7 @@ class NoteController extends Controller
         }
 
         if ($request->filled('classe_id')) {
-            $query->whereHas('eleve', function($q) use ($request) {
+            $query->whereHas('eleve', function ($q) use ($request) {
                 $q->where('classe_id', $request->classe_id);
             });
         }
@@ -191,10 +189,10 @@ class NoteController extends Controller
         // Recherche
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('matiere', 'like', "%$search%")
                   ->orWhere('type_evaluation', 'like', "%$search%")
-                  ->orWhereHas('eleve', function($eleveQuery) use ($search) {
+                  ->orWhereHas('eleve', function ($eleveQuery) use ($search) {
                       $eleveQuery->where('nom', 'like', "%$search%")
                                  ->orWhere('prenom', 'like', "%$search%");
                   });
@@ -204,7 +202,7 @@ class NoteController extends Controller
         $notes = $query->orderBy('date_evaluation', 'desc')->get();
 
         // Préparer les données pour le JSON
-        $notesData = $notes->map(function($note) {
+        $notesData = $notes->map(function ($note) {
             return [
                 'id' => $note->id,
                 'eleve' => [
@@ -252,11 +250,11 @@ class NoteController extends Controller
     {
         $eleves = Eleve::with('classe')->orderBy('nom')->get();
         $enseignants = User::where('role', 'enseignant')->orderBy('name')->get();
-        
+
         // Matières prédéfinies
         $matieres = [
             'Mathématiques',
-            'Français', 
+            'Français',
             'Arabe',
             'Anglais',
             'Sciences Physiques',
@@ -294,10 +292,10 @@ class NoteController extends Controller
         // Récupérer l'élève pour valider le type d'établissement et déterminer note_sur
         $eleve = Eleve::findOrFail($request->eleve_id);
         $typeEtablissement = $eleve->type_etablissement;
-        
+
         // Déterminer la note sur selon le type d'établissement
         $noteSur = ($typeEtablissement === 'primaire') ? 10 : 20;
-        
+
         // Valider que la note ne dépasse pas le maximum
         if ($request->note > $noteSur) {
             return back()->withErrors(['note' => "La note ne peut pas dépasser {$noteSur} pour le {$typeEtablissement}."])->withInput();
@@ -348,7 +346,7 @@ class NoteController extends Controller
     {
         $eleves = Eleve::with('classe')->orderBy('nom')->get();
         $enseignants = User::where('role', 'enseignant')->orderBy('name')->get();
-        
+
         return view('notes.edit', compact('note', 'eleves', 'enseignants'));
     }
 
@@ -403,7 +401,7 @@ class NoteController extends Controller
         $matiere = $request->get('matiere');
 
         $query = Note::where('semestre', $semestre);
-        
+
         if ($matiere) {
             $query->where('matiere', $matiere);
         }
@@ -439,13 +437,13 @@ class NoteController extends Controller
     public function bulletin(Eleve $eleve, Request $request)
     {
         $semestre = $request->get('semestre', 'S2');
-        
+
         $notes = Note::where('eleve_id', $eleve->id)
                     ->where('semestre', $semestre)
                     ->orderBy('matiere')
                     ->get();
 
-        $moyennes = $notes->groupBy('matiere')->map(function($notesMatiere) {
+        $moyennes = $notes->groupBy('matiere')->map(function ($notesMatiere) {
             return $notesMatiere->avg('note_vingt');
         });
 

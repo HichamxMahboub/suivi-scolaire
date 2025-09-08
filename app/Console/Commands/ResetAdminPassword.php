@@ -41,7 +41,7 @@ class ResetAdminPassword extends Command
         // Vérifier que c'est un administrateur
         if ($user->role !== 'admin') {
             $this->warn("⚠️  L'utilisateur {$email} n'est pas un administrateur (rôle: {$user->role})");
-            
+
             if (!$this->confirm('Voulez-vous continuer quand même ?')) {
                 $this->info('Opération annulée.');
                 return 0;
@@ -63,4 +63,4 @@ class ResetAdminPassword extends Command
 
         return 0;
     }
-} 
+}

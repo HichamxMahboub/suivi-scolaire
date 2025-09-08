@@ -13,7 +13,7 @@ class EleveFactory extends Factory
     public function definition(): array
     {
         $niveaux = ['1AP', '2AP', '3AP', '4AP', '5AP', '6AP', '1AC', '2AC', '3AC'];
-        
+
         return [
             'numero_matricule' => 'MAT' . $this->faker->unique()->numberBetween(1000, 9999),
             'nom' => $this->faker->lastName(),
@@ -35,4 +35,4 @@ class EleveFactory extends Factory
             'classe_id' => Classe::factory(),
         ];
     }
-} 
+}

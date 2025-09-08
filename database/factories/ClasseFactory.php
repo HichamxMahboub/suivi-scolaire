@@ -13,7 +13,7 @@ class ClasseFactory extends Factory
     {
         $niveaux = ['1AP', '2AP', '3AP', '4AP', '5AP', '6AP', '1AC', '2AC', '3AC'];
         $annees = ['2023-2024', '2024-2025'];
-        
+
         return [
             'nom' => $this->faker->randomElement($niveaux) . ' ' . $this->faker->randomLetter(),
             'niveau' => $this->faker->randomElement($niveaux),
@@ -24,4 +24,4 @@ class ClasseFactory extends Factory
             'active' => $this->faker->boolean(80), // 80% chance d'être active
         ];
     }
-} 
+}

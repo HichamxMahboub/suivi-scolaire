@@ -58,4 +58,4 @@ class ListAdminUsers extends Command
 
         return 0;
     }
-} 
+}

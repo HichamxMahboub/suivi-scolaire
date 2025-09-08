@@ -45,4 +45,4 @@ class UpdateNiveauxScolairesSeeder extends Seeder
 
         $this->command->info('Niveaux scolaires mis à jour vers le système marocain !');
     }
-} 
+}

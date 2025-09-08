@@ -27,7 +27,7 @@ class SyncPhotos extends Command
 
         // Copier récursivement tous les fichiers
         File::copyDirectory($sourceDir, $targetDir);
-        
+
         $this->info('Synchronisation des photos terminée avec succès!');
         return 0;
     }

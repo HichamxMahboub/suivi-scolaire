@@ -43,7 +43,7 @@ class AssignTypesEtablissement extends Command
             '5EME ANNEE PRIMAIRE' => 'primaire',
             '6ème Année Primaire' => 'primaire',
             '6EME ANNEE PRIMAIRE' => 'primaire',
-            
+
             // Collège (1ère à 3ème année)
             '1ère Année Collège' => 'college',
             '1ERE ANNEE COLLEGE' => 'college',
@@ -51,7 +51,7 @@ class AssignTypesEtablissement extends Command
             '2EME ANNEE COLLEGE' => 'college',
             '3ème Année Collège' => 'college',
             '3EME ANNEE COLLEGE' => 'college',
-            
+
             // Lycée (1ère à 4ème année)
             '1ère Année Lycée' => 'lycee',
             '1ERE ANNEE LYCEE' => 'lycee',
@@ -61,10 +61,10 @@ class AssignTypesEtablissement extends Command
             '3EME ANNEE LYCEE' => 'lycee',
             '4ème Année Lycée' => 'lycee',
             '4EME ANNEE LYCEE' => 'lycee',
-            
+
             // Anciens noms français (pour compatibilité)
             'CP' => 'primaire',
-            'CE1' => 'primaire', 
+            'CE1' => 'primaire',
             'CE2' => 'primaire',
             'CM1' => 'primaire',
             'CM2' => 'primaire',
@@ -72,10 +72,10 @@ class AssignTypesEtablissement extends Command
             'CE1/CE2' => 'primaire',
             'CE2/CM1' => 'primaire',
             'CM1/CM2' => 'primaire',
-            
+
             '6ème' => 'college',
             '6EME' => 'college',
-            '5ème' => 'college', 
+            '5ème' => 'college',
             '5EME' => 'college',
             '4ème' => 'college',
             '4EME' => 'college',
@@ -85,7 +85,7 @@ class AssignTypesEtablissement extends Command
             'Cinquième' => 'college',
             'Quatrième' => 'college',
             'Troisième' => 'college',
-            
+
             '2nde' => 'lycee',
             '2NDE' => 'lycee',
             'Seconde' => 'lycee',
@@ -104,7 +104,7 @@ class AssignTypesEtablissement extends Command
 
         // Récupérer tous les élèves
         $eleves = Eleve::with('classeInfo')->get();
-        
+
         $this->info("Traitement de {$eleves->count()} élèves...\n");
 
         foreach ($eleves as $eleve) {
@@ -116,7 +116,7 @@ class AssignTypesEtablissement extends Command
             }
 
             $nomClasse = $eleve->classeInfo->nom;
-            
+
             // Chercher une correspondance directe
             $typeDetecte = null;
             foreach ($typesMapping as $pattern => $type) {
@@ -125,7 +125,7 @@ class AssignTypesEtablissement extends Command
                     break;
                 }
             }
-            
+
             // Si pas trouvé, essayer la détection intelligente
             if (!$typeDetecte) {
                 $typeDetecte = $this->detectTypeIntelligent($nomClasse);
@@ -135,7 +135,7 @@ class AssignTypesEtablissement extends Command
                 // Mettre à jour le type d'établissement
                 $eleve->type_etablissement = $typeDetecte;
                 $eleve->save();
-                
+
                 $emoji = $this->getEmojiForType($typeDetecte);
                 $this->info("  ✅ {$eleve->nom} {$eleve->prenom} ({$nomClasse}) → {$emoji} " . ucfirst($typeDetecte));
                 $updated++;
@@ -189,37 +189,37 @@ class AssignTypesEtablissement extends Command
     private function detectTypeIntelligent($nomClasse)
     {
         $nomClasse = strtolower($nomClasse);
-        
+
         // Détecter "primaire" dans le nom
         if (preg_match('/primaire/', $nomClasse)) {
             return 'primaire';
         }
-        
-        // Détecter "collège" dans le nom  
+
+        // Détecter "collège" dans le nom
         if (preg_match('/coll[èe]ge/', $nomClasse)) {
             return 'college';
         }
-        
+
         // Détecter "lycée" dans le nom
         if (preg_match('/lyc[ée]e/', $nomClasse)) {
             return 'lycee';
         }
-        
+
         // Détecter par numéro d'année pour primaire (1-6)
         if (preg_match('/[1-6].*ann[ée]e.*primaire/', $nomClasse)) {
             return 'primaire';
         }
-        
+
         // Détecter par numéro d'année pour collège (1-3)
         if (preg_match('/[1-3].*ann[ée]e.*coll[èe]ge/', $nomClasse)) {
             return 'college';
         }
-        
+
         // Détecter par numéro d'année pour lycée (1+)
         if (preg_match('/[1-4].*ann[ée]e.*lyc[ée]e/', $nomClasse)) {
             return 'lycee';
         }
-        
+
         return null;
     }
 

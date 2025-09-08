@@ -81,7 +81,7 @@ class MessageController extends Controller
         $selectedEleve = $request->get('eleve');
 
         // Préparation des données parents pour le JS
-        $elevesData = $eleves->map(function($eleve) {
+        $elevesData = $eleves->map(function ($eleve) {
             return [
                 'id' => $eleve->id,
                 'parent1' => [
@@ -162,7 +162,7 @@ class MessageController extends Controller
     public function show(Message $message): View
     {
         $user = Auth::user();
-        
+
         // Vérifier que l'utilisateur peut voir ce message
         $this->authorize('view', $message);
 
@@ -180,7 +180,7 @@ class MessageController extends Controller
     public function markAsRead(Message $message): RedirectResponse
     {
         $user = Auth::user();
-        
+
         if ($message->recipient_id === $user->id) {
             $message->markAsRead();
             return redirect()->back()->with('success', 'Message marqué comme lu.');
@@ -217,7 +217,7 @@ class MessageController extends Controller
     public function destroy(Message $message): RedirectResponse
     {
         $user = Auth::user();
-        
+
         $this->authorize('delete', $message);
 
         if ($message->sender_id === $user->id || $message->recipient_id === $user->id) {
@@ -252,7 +252,7 @@ class MessageController extends Controller
     public function stats(): View
     {
         $user = Auth::user();
-        
+
         $stats = [
             'total_received' => $user->receivedMessages()->count(),
             'unread_received' => $user->unreadMessages()->count(),
@@ -340,4 +340,4 @@ class MessageController extends Controller
         $message->restoreArchive();
         return redirect()->route('messages.index')->with('success', 'Message restauré.');
     }
-} 
+}

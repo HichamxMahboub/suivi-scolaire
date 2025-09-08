@@ -74,11 +74,19 @@ class DashboardController extends Controller
         });
 
         $eleves_par_mois = Cache::remember('dashboard_mois', 300, function () {
+            $driver = DB::getDriverName();
+            $monthExpr = $driver === 'sqlite'
+                ? DB::raw("strftime('%m', created_at) as mois")
+                : DB::raw('MONTH(created_at) as mois');
+            $yearExpr = $driver === 'sqlite'
+                ? DB::raw("strftime('%Y', created_at) as annee")
+                : DB::raw('YEAR(created_at) as annee');
+
             return Eleve::select(
-                    DB::raw('MONTH(created_at) as mois'),
-                    DB::raw('YEAR(created_at) as annee'),
-                    DB::raw('count(*) as total')
-                )
+                $monthExpr,
+                $yearExpr,
+                DB::raw('count(*) as total')
+            )
                 ->where('created_at', '>=', Carbon::now()->subMonths(6))
                 ->groupBy('mois', 'annee')
                 ->orderBy('annee', 'desc')
@@ -109,7 +117,7 @@ class DashboardController extends Controller
 
         // Alertes
         $alertes = [];
-        
+
         if ($eleves_incomplets > 0) {
             $alertes[] = [
                 'type' => 'warning',
@@ -230,7 +238,7 @@ class DashboardController extends Controller
         }
 
         // Trier par date
-        usort($recent_activity, function($a, $b) {
+        usort($recent_activity, function ($a, $b) {
             return strcmp($b['time'], $a['time']);
         });
 
@@ -241,4 +249,4 @@ class DashboardController extends Controller
             'timestamp' => now()->toISOString()
         ]);
     }
-} 
+}

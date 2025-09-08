@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Policies;
 
 use App\Models\User;
@@ -22,4 +23,4 @@ class MessagePolicy
     {
         return $user->id === $message->sender_id || $user->id === $message->recipient_id;
     }
-} 
+}

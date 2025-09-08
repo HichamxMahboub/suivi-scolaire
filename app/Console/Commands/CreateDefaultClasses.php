@@ -39,12 +39,12 @@ class CreateDefaultClasses extends Command
 
         foreach ($classes as $classeData) {
             $existingClasse = Classe::where('nom', $classeData['nom'])->first();
-            
+
             if (!$existingClasse) {
                 // Ajouter l'année scolaire requise
                 $classeData['annee_scolaire'] = date('Y') . '-' . (date('Y') + 1);
                 $classeData['capacite_max'] = 30; // Capacité par défaut
-                
+
                 Classe::create($classeData);
                 $this->line("✓ Classe '{$classeData['nom']}' créée ({$classeData['niveau']})");
                 $created++;
@@ -58,7 +58,7 @@ class CreateDefaultClasses extends Command
         $this->info("Création terminée !");
         $this->info("✓ {$created} classes créées");
         $this->warn("⚠ {$existing} classes existaient déjà");
-        
+
         return 0;
     }
 }

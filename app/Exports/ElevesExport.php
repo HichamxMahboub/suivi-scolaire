@@ -20,4 +20,4 @@ class ElevesExport implements FromView
             'eleves' => $this->eleves
         ]);
     }
-} 
+}

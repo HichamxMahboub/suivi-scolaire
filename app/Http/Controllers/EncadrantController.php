@@ -55,7 +55,7 @@ class EncadrantController extends Controller
     {
         // Charger les élèves avec leurs classes
         $encadrant->load(['eleves.classeInfo']);
-        
+
         // Récupérer les élèves qui n'ont pas d'encadrant ou qui ont un autre encadrant
         $elevesDisponibles = \App\Models\Eleve::whereNull('encadrant_id')
                                             ->orWhere('encadrant_id', '!=', $encadrant->id)
@@ -63,7 +63,7 @@ class EncadrantController extends Controller
                                             ->orderBy('nom')
                                             ->orderBy('prenom')
                                             ->get();
-        
+
         return view('encadrants.show', compact('encadrant', 'elevesDisponibles'));
     }
 
@@ -117,7 +117,7 @@ class EncadrantController extends Controller
         ]);
 
         $eleve = \App\Models\Eleve::findOrFail($request->eleve_id);
-        
+
         // Vérifier si l'élève n'est pas déjà assigné à cet encadrant
         if ($eleve->encadrant_id == $encadrant->id) {
             return redirect()->back()->with('error', 'Cet élève est déjà assigné à cet encadrant.');
@@ -140,7 +140,7 @@ class EncadrantController extends Controller
         ]);
 
         $eleve = \App\Models\Eleve::findOrFail($request->eleve_id);
-        
+
         // Vérifier que l'élève appartient bien à cet encadrant
         if ($eleve->encadrant_id != $encadrant->id) {
             return redirect()->back()->with('error', 'Cet élève n\'est pas assigné à cet encadrant.');
@@ -152,4 +152,4 @@ class EncadrantController extends Controller
 
         return redirect()->back()->with('success', "L'élève {$eleve->prenom} {$eleve->nom} a été retiré avec succès de l'encadrant {$encadrant->prenom} {$encadrant->nom}.");
     }
-} 
+}

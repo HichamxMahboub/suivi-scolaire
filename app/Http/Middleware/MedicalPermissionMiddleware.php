@@ -19,7 +19,7 @@ class MedicalPermissionMiddleware
         }
 
         $user = Auth::user();
-        
+
         // Seuls les admins et le personnel médical peuvent accéder
         if (!$user->canViewMedicalInfo()) {
             abort(403, 'Accès refusé. Vous n\'avez pas les permissions pour voir les informations médicales.');

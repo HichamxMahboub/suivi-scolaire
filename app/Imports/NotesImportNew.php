@@ -77,7 +77,7 @@ class NotesImport implements ToModel, WithHeadingRow
 
         // Essayer d'autres formats
         $formats = ['d/m/Y', 'd-m-Y', 'Y/m/d', 'm/d/Y'];
-        
+
         foreach ($formats as $format) {
             $parsed = \DateTime::createFromFormat($format, $date);
             if ($parsed && $parsed->format($format) === $date) {

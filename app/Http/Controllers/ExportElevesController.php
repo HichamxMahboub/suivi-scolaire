@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Eleve;
-use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
-use Illuminate\Http\Response;
 
 class ExportElevesController extends Controller
 {
@@ -133,4 +131,4 @@ class ExportElevesController extends Controller
             'Content-Disposition' => 'attachment; filename="' . $filename . '"',
         ]);
     }
-} 
+}

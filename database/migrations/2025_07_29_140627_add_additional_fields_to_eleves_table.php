@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
@@ -28,7 +27,7 @@ return new class extends Migration
             if (!Schema::hasColumn('eleves', 'educateur_responsable')) {
                 $table->string('educateur_responsable')->nullable()->after('annee_entree');
             }
-            
+
             // Informations de contact
             if (!Schema::hasColumn('eleves', 'email')) {
                 $table->string('email')->nullable()->after('sexe');
@@ -45,7 +44,7 @@ return new class extends Migration
             if (!Schema::hasColumn('eleves', 'nom_tuteur')) {
                 $table->string('nom_tuteur')->nullable()->after('contact_urgence');
             }
-            
+
             // Informations médicales
             if (!Schema::hasColumn('eleves', 'groupe_sanguin')) {
                 $table->string('groupe_sanguin')->nullable()->after('nom_tuteur');
@@ -62,7 +61,7 @@ return new class extends Migration
             if (!Schema::hasColumn('eleves', 'numero_assurance')) {
                 $table->string('numero_assurance')->nullable()->after('medecin_traitant');
             }
-            
+
             // Autres champs
             if (!Schema::hasColumn('eleves', 'photo')) {
                 $table->string('photo')->nullable()->after('numero_assurance');
@@ -73,7 +72,7 @@ return new class extends Migration
             if (!Schema::hasColumn('eleves', 'niveau_redouble')) {
                 $table->string('niveau_redouble')->nullable()->after('redoublant');
             }
-            
+
             // Relations
             if (!Schema::hasColumn('eleves', 'classe_id')) {
                 $table->unsignedBigInteger('classe_id')->nullable()->after('type_etablissement');

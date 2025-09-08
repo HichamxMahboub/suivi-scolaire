@@ -19,18 +19,18 @@ return [
         '4AP' => '4ème année primaire',
         '5AP' => '5ème année primaire',
         '6AP' => '6ème année primaire',
-        
+
         // Collège (Secondaire collégial)
         '1AC' => '1ère année collège (7ème année)',
         '2AC' => '2ème année collège (8ème année)',
         '3AC' => '3ème année collège (9ème année)',
-        
+
         // Lycée (Secondaire qualifiant) - Tronc commun
         'TC Sciences' => 'Tronc commun Sciences',
         'TC Lettres' => 'Tronc commun Lettres',
         'TC Techniques' => 'Tronc commun Techniques',
         'TC Économie' => 'Tronc commun Économie',
-        
+
         // 1ère année Bac
         '1ère Bac Sciences Mathématiques A' => '1ère année Bac Sciences Mathématiques A',
         '1ère Bac Sciences Mathématiques B' => '1ère année Bac Sciences Mathématiques B',
@@ -40,7 +40,7 @@ return [
         '1ère Bac Techniques de gestion' => '1ère année Bac Techniques de gestion',
         '1ère Bac Lettres modernes' => '1ère année Bac Lettres modernes',
         '1ère Bac Lettres originelles' => '1ère année Bac Lettres originelles',
-        
+
         // 2ème année Bac
         '2ème Bac Sciences Mathématiques A' => '2ème année Bac Sciences Mathématiques A',
         '2ème Bac Sciences Mathématiques B' => '2ème année Bac Sciences Mathématiques B',
@@ -108,4 +108,4 @@ return [
         '2ème Bac SVT', '2ème Bac Sciences Éco', '2ème Bac Gestion & Comptabilité',
         '2ème Bac Lettres modernes', '2ème Bac Lettres originelles'
     ]
-]; 
+];

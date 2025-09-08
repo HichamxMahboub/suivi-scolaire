@@ -15,7 +15,7 @@ class PerformanceHelper
         if (!empty($relations)) {
             $query->with($relations);
         }
-        
+
         return $query;
     }
 
@@ -52,4 +52,4 @@ class PerformanceHelper
             ];
         });
     }
-} 
+}

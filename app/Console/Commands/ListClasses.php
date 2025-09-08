@@ -14,20 +14,20 @@ class ListClasses extends Command
     {
         $this->info('Classes existantes dans la base de données:');
         $this->info('==========================================');
-        
+
         $classes = Classe::orderBy('nom')->get();
-        
+
         if ($classes->isEmpty()) {
             $this->warn('Aucune classe trouvée dans la base de données.');
             return 0;
         }
-        
+
         foreach ($classes as $classe) {
             $this->line("- {$classe->nom} (ID: {$classe->id})");
         }
-        
+
         $this->info("\nTotal: " . $classes->count() . " classe(s)");
-        
+
         return 0;
     }
 }

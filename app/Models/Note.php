@@ -61,11 +61,19 @@ class Note extends Model
     public function getMentionAttribute(): string
     {
         $noteVingt = $this->getNoteVingtAttribute();
-        
-        if ($noteVingt >= 16) return 'Très Bien';
-        if ($noteVingt >= 14) return 'Bien';
-        if ($noteVingt >= 12) return 'Assez Bien';
-        if ($noteVingt >= 10) return 'Passable';
+
+        if ($noteVingt >= 16) {
+            return 'Très Bien';
+        }
+        if ($noteVingt >= 14) {
+            return 'Bien';
+        }
+        if ($noteVingt >= 12) {
+            return 'Assez Bien';
+        }
+        if ($noteVingt >= 10) {
+            return 'Passable';
+        }
         return 'Insuffisant';
     }
 
@@ -75,11 +83,19 @@ class Note extends Model
     public function getCouleurAttribute(): string
     {
         $noteVingt = $this->getNoteVingtAttribute();
-        
-        if ($noteVingt >= 16) return 'text-green-600';
-        if ($noteVingt >= 14) return 'text-blue-600';
-        if ($noteVingt >= 12) return 'text-yellow-600';
-        if ($noteVingt >= 10) return 'text-orange-600';
+
+        if ($noteVingt >= 16) {
+            return 'text-green-600';
+        }
+        if ($noteVingt >= 14) {
+            return 'text-blue-600';
+        }
+        if ($noteVingt >= 12) {
+            return 'text-yellow-600';
+        }
+        if ($noteVingt >= 10) {
+            return 'text-orange-600';
+        }
         return 'text-red-600';
     }
 

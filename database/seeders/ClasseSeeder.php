@@ -35,4 +35,4 @@ class ClasseSeeder extends Seeder
             }
         }
     }
-} 
+}

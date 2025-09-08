@@ -21,7 +21,7 @@ class RoleMiddleware
         }
 
         $user = Auth::user();
-        
+
         // Vérifier si l'utilisateur a l'un des rôles requis
         if (!$user->hasAnyRole($roles)) {
             abort(403, 'Accès refusé. Vous n\'avez pas les permissions nécessaires.');

@@ -136,7 +136,7 @@ class NotesHelper
      */
     public static function getSemestresByType($typeEtablissement)
     {
-        switch($typeEtablissement) {
+        switch ($typeEtablissement) {
             case 'primaire':
                 return ['S1', 'S2'];
             case 'college':
@@ -154,21 +154,21 @@ class NotesHelper
     {
         $matieres = self::getMatieresByType($typeEtablissement);
         $moyennes = [];
-        
+
         foreach ($matieres as $matiere => $config) {
             $notes = $eleve->notes()
                           ->where('matiere', $matiere)
-                          ->when($semestre, function($query) use ($semestre) {
+                          ->when($semestre, function ($query) use ($semestre) {
                               return $query->where('semestre', $semestre);
                           })
                           ->get();
-            
+
             if ($notes->count() > 0) {
                 $moyenne = $notes->avg('note');
                 $moyennes[$matiere] = round($moyenne, 2);
             }
         }
-        
+
         return $moyennes;
     }
 
@@ -192,11 +192,11 @@ class NotesHelper
     {
         $matieres = self::getMatieresByType($typeEtablissement);
         $config = $matieres[$matiere] ?? null;
-        
+
         if (!$config) {
             return false;
         }
-        
+
         return $note >= 0 && $note <= $config['note_sur'];
     }
 
@@ -205,10 +205,18 @@ class NotesHelper
      */
     public static function getMention($moyenne)
     {
-        if ($moyenne >= 16) return ['mention' => 'Très Bien', 'couleur' => 'text-green-600'];
-        if ($moyenne >= 14) return ['mention' => 'Bien', 'couleur' => 'text-blue-600'];
-        if ($moyenne >= 12) return ['mention' => 'Assez Bien', 'couleur' => 'text-yellow-600'];
-        if ($moyenne >= 10) return ['mention' => 'Passable', 'couleur' => 'text-orange-600'];
+        if ($moyenne >= 16) {
+            return ['mention' => 'Très Bien', 'couleur' => 'text-green-600'];
+        }
+        if ($moyenne >= 14) {
+            return ['mention' => 'Bien', 'couleur' => 'text-blue-600'];
+        }
+        if ($moyenne >= 12) {
+            return ['mention' => 'Assez Bien', 'couleur' => 'text-yellow-600'];
+        }
+        if ($moyenne >= 10) {
+            return ['mention' => 'Passable', 'couleur' => 'text-orange-600'];
+        }
         return ['mention' => 'Insuffisant', 'couleur' => 'text-red-600'];
     }
 }

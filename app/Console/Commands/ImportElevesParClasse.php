@@ -14,9 +14,9 @@ class ImportElevesParClasse extends Command
     public function handle()
     {
         $this->info('Début de l\'import des élèves par classe...');
-        
+
         $filePath = storage_path('app/eleves_par_classe.csv');
-        
+
         if (!file_exists($filePath)) {
             $this->error('Fichier CSV non trouvé : ' . $filePath);
             return 1;
@@ -30,7 +30,7 @@ class ImportElevesParClasse extends Command
         while (($data = fgetcsv($handle)) !== false) {
             try {
                 $row = array_combine($headers, $data);
-                
+
                 // Vérifier si l'élève existe déjà par matricule
                 $existing = Eleve::where('numero_matricule', $row['numero_matricule'])->first();
                 if ($existing) {

@@ -27,7 +27,7 @@ class ImportEleves extends Command
     public function handle()
     {
         $filePath = $this->argument('file');
-        
+
         if (!file_exists($filePath)) {
             $this->error("Le fichier {$filePath} n'existe pas.");
             return 1;
@@ -58,11 +58,11 @@ class ImportEleves extends Command
 
         while (($data = fgetcsv($handle)) !== false) {
             $lineNumber++;
-            
+
             try {
                 // Créer un tableau associatif avec les en-têtes
                 $row = array_combine($headers, $data);
-                
+
                 // Validation des données requises
                 if (empty($row['numero_matricule']) || empty($row['nom']) || empty($row['prenom']) || empty($row['niveau_scolaire']) || empty($row['classe']) || empty($row['date_naissance']) || empty($row['annee_entree'])) {
                     $this->warn("Ligne {$lineNumber}: Champs obligatoires manquants, ligne ignorée.");
@@ -103,7 +103,7 @@ class ImportEleves extends Command
                 // Créer l'élève
                 Eleve::create($eleveData);
                 $imported++;
-                
+
                 $this->line("✓ Ligne {$lineNumber}: {$row['nom']} {$row['prenom']} importé.");
 
             } catch (\Exception $e) {
@@ -136,7 +136,7 @@ class ImportEleves extends Command
 
         // Essayer différents formats de date
         $formats = ['Y-m-d', 'd/m/Y', 'd-m-Y', 'Y/m/d'];
-        
+
         foreach ($formats as $format) {
             $date = \DateTime::createFromFormat($format, $dateString);
             if ($date !== false) {
@@ -158,4 +158,4 @@ class ImportEleves extends Command
 
         return is_numeric($value) ? (int) $value : null;
     }
-} 
+}

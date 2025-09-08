@@ -89,4 +89,4 @@ class ModeleImportElevesExport implements FromCollection, WithHeadings, WithStyl
 
         return $sheet;
     }
-} 
+}

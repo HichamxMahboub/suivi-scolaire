@@ -70,4 +70,4 @@ class CreateRootUser extends Command
 
         return 0;
     }
-} 
+}

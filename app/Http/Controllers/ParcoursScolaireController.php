@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\ParcoursScolaire;
@@ -40,4 +41,4 @@ class ParcoursScolaireController extends Controller
         $parcours->delete();
         return redirect()->route('eleves.show', $eleveId)->with('success', 'Année supprimée du parcours scolaire.');
     }
-} 
+}

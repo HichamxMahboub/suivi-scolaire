@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,4 +22,4 @@ class ParcoursScolaire extends Model
     {
         return $this->belongsTo(Eleve::class);
     }
-} 
+}

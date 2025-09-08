@@ -45,4 +45,4 @@ class RootUserSeeder extends Seeder
         $this->command->info('Admin Test: admin@test.com / admin123');
         $this->command->info('Enseignant Test: enseignant@test.com / teacher123');
     }
-} 
+}
